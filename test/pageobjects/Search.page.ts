@@ -17,7 +17,14 @@ class SearchPage {
     }
 
     public async isSearchResultsListDisplayed() {
-        return await this.searchResultsList.isDisplayed();
+        try {
+            await this.searchResultsList.waitForDisplayed({
+                timeout: 1500
+            });
+            return await this.searchResultsList.isDisplayed();
+        } catch (e) {
+            return false;
+        }
     }
 }
 
