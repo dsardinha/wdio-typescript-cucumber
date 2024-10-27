@@ -5,7 +5,7 @@ import LoginPage from '../pageobjects/Login.page';
 import SearchPage from '../pageobjects/Search.page';
 import FeedbackPage from '../pageobjects/Feedback.page';
 
-Given('the user is on the home page', async () => {
+Given('the user is on the homepage', async () => {
     await HomePage.open();
 });
 

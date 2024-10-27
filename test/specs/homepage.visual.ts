@@ -1,13 +1,16 @@
 import HomePage from "../pageobjects/Home.page";
 
-describe('Homepage', () => {
-    it('Should correctly display the homepage', async () => {
+describe('Homepage Visual', () => {
+    it('Should correctly display the homepage', async function () {  // Use `function` to maintain `this` context
         await HomePage.open();
-        await HomePage.compareHomepageSnapshot();  
-    })
+        await HomePage.compareHomepageSnapshot(this.test?.title);
+    });
 
-    it('Should correctly display remaining carousel items', async () => {
-        await HomePage.compareCarouselSnapshotAfterSwipe(1);
-        await HomePage.compareCarouselSnapshotAfterSwipe(2);
-    })
-})
+    it('Should correctly display second carousel item', async function () {
+        await HomePage.compareCarouselSnapshotAfterSwipe(this.test?.title, 1);
+    });
+
+    it('Should correctly display third carousel item', async function () {
+        await HomePage.compareCarouselSnapshotAfterSwipe(this.test?.title, 2);
+    });
+});

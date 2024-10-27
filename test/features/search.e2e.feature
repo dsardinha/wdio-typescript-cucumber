@@ -1,9 +1,9 @@
-Feature: Search
+Feature: Search E2E
 
     Background: 
-        Given the user is on the home page
+        Given the user is on the homepage
 
-    Scenario Outline: Search with results
+    Scenario Outline: User executes a search and results are returned
         When the user searches for <query>
         Then search returns results
         And a successful search results message is displayed mentioning <query>
@@ -13,7 +13,7 @@ Feature: Search
             | "bank"    |
             | "account" | 
 
-    Scenario: Search without results
+    Scenario: User executes a search and results are not returned
         When the user searches for "apple"
         Then no results are returned
         And a search results message is displayed mentioning that there are no results for "apple"

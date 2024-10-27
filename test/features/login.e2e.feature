@@ -1,4 +1,4 @@
-Feature: Login
+Feature: Login E2E
 
     Background: 
         Given the user is on the login page

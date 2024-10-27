@@ -1,3 +1,5 @@
+import { addAllureReportScreenshot } from './test/utilities/helper';
+
 export const config: WebdriverIO.Config = {
     //
     // ====================
@@ -46,7 +48,7 @@ export const config: WebdriverIO.Config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 3,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -54,7 +56,7 @@ export const config: WebdriverIO.Config = {
     //
     capabilities: [
         {
-            browserName: 'chrome'
+            browserName: 'chrome',
         },
         {
             browserName: 'firefox'
@@ -111,7 +113,16 @@ export const config: WebdriverIO.Config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['visual'],
+    services: [
+        [
+            "visual",
+            {
+                screenshotPath: 'test/specs/screenshots',
+                baselineFolder: 'test/specs/screenshots/expected',
+                formatImageName: "{tag}-{browserName}",
+            },
+        ],
+    ],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -134,7 +145,17 @@ export const config: WebdriverIO.Config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: [
+        ['allure', 
+            {
+                outputDir: 'allure-results',
+                disableWebdriverStepsReporting: true,
+                disableWebdriverScreenshotsReporting: process.env.DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING === 'true',
+                disableMochaHooks: true,
+                useCucumberStepReporter: process.env.CUCUMBER_STEP_REPORTER === 'true'
+            }
+        ]
+    ],
 
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
@@ -161,12 +182,12 @@ export const config: WebdriverIO.Config = {
         // <number> timeout for step definitions
         timeout: 60000,
         // <boolean> Enable this config to treat undefined definitions as warnings.
-        ignoreUndefinedDefinitions: false
+        ignoreUndefinedDefinitions: false,
     },
 
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 60000,
     },
     //
     // =====
@@ -266,8 +287,6 @@ export const config: WebdriverIO.Config = {
      * @param {number}             result.duration  duration of scenario in milliseconds
      * @param {object}             context          Cucumber World object
      */
-    // afterStep: function (step, scenario, result, context) {
-    // },
     /**
      *
      * Runs after a Cucumber Scenario.
@@ -280,6 +299,11 @@ export const config: WebdriverIO.Config = {
      */
     // afterScenario: function (world, result, context) {
     // },
+    afterStep: async function (step, scenario, { error, duration, passed }) {
+        if (error) {
+            await browser.takeScreenshot()
+        }
+    },
     /**
      *
      * Runs after a Cucumber Feature.
@@ -344,4 +368,19 @@ export const config: WebdriverIO.Config = {
     */
     // afterAssertion: function(params) {
     // }
+    afterTest: async function(test, context, { error, passed }) {
+        const browserName = browser.capabilities.browserName;
+        
+        const actualFilePath = `./test/specs/screenshots/actual/${test.title.replace(/\s+/g, '_')}-${browserName}.png`;
+        const diffFilePath = `./test/specs/screenshots/diff/${test.title.replace(/\s+/g, '_')}-${browserName}.png`;
+        const expectedFilePath = `./test/specs/screenshots/expected/${test.title.replace(/\s+/g, '_')}-${browserName}.png`;
+
+        if (passed) {
+            addAllureReportScreenshot('Actual', actualFilePath);
+        } else if(error) {
+            addAllureReportScreenshot('Actual', actualFilePath);
+            addAllureReportScreenshot('Diff', diffFilePath);
+            addAllureReportScreenshot('Expected', expectedFilePath);
+        }
+    }
 }

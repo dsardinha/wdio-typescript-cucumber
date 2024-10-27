@@ -1,5 +1,5 @@
-Feature: Home Page
+Feature: Homepage E2E
 
-    Scenario: The different online banking features are displayed
-        Given the user is on the home page
+    Scenario: User sees the available online banking features
+        Given the user is on the homepage
         Then the user can see the different online banking features headers

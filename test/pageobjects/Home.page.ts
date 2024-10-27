@@ -28,15 +28,15 @@ class HomePage {
         await expect(onlineBankingFeaturesList).toEqual(data.onlineBankingFeatures);
     }
 
-    public async compareHomepageSnapshot() {
+    public async compareHomepageSnapshot(fileName: any) {
         const navBar = await $('.navbar');
-        await helper.compareFullPageSnapshot(navBar, 'homepage', 0);
+        await helper.compareFullPageSnapshot(navBar, fileName, 0);
     }
 
-    public async compareCarouselSnapshot(carouselItem: number = 0) {
+    public async compareCarouselSnapshot(fileName: any, carouselItem: number) {
         const carousel = await $('.carousel-inner');
         const navBar = await $('.navbar');
-        await helper.compareElementSnapshot(carousel, navBar, `carousel-${carouselItem}`, 0);
+        await helper.compareElementSnapshot(carousel, navBar, fileName, 0);
     }
 
     public async swipeCarouselToRight() {
@@ -52,12 +52,12 @@ class HomePage {
         });
     }
 
-    public async compareCarouselSnapshotAfterSwipe(carouselItem: number) {
+    public async compareCarouselSnapshotAfterSwipe(fileName: any, carouselItem: number) {
         await this.swipeCarouselToRight();
         await browser.waitUntil(async () => {
             return (await this.getActiveCarouselItemIndex() === carouselItem);
         })
-        await this.compareCarouselSnapshot(carouselItem);
+        await this.compareCarouselSnapshot(fileName, carouselItem);
     }
 }
 

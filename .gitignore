@@ -1,2 +1,6 @@
 node_modules
 .tmp
+allure-results
+allure-report
+test/specs/screenshots/actual
+test/specs/screenshots/diff
