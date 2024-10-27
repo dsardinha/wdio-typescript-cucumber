@@ -1,23 +1,33 @@
 pipeline {
-  agent any
-  stages {
-    stage('Install dependencies') {
-      steps {
-        sh 'npm install'
-      }
+    agent any
+    tools {
+        nodejs '22.9.0' 
     }
-
-    stage('E2E Tests') {
-      steps {
-        sh 'npm run e2e'
-      }
+    
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('E2E Tests') {
+            steps {
+                sh 'npm run e2e'
+            }
+        }
+        stage('Visual Tests') {
+            steps {
+                sh 'npm run visual'
+            }
+        }
+        stage('Allure Report') {
+            steps {
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    results: [[path: 'allure-results']]
+                ])
+            }
+        }
     }
-
-    stage('Visual Tests') {
-      steps {
-        sh 'npm run visual'
-      }
-    }
-
-  }
 }
