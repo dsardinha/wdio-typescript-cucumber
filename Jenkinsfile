@@ -8,13 +8,10 @@ pipeline {
     }
     
     stages {
-        stage('Install dependencies') {
+        stage('Prepare test environment') {
             steps {
                 sh 'npm install'
-            }
-        }
-        stage('Start docker-compose') {
-            steps {
+                sh 'rm -r allure-results'
                 sh 'npm run dockercomposeup'
             }
         }
