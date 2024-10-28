@@ -1,11 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '-u root'
-        }
-    }
-    
+    agent any
     tools {
         nodejs '22.9.0' 
     }
@@ -18,6 +12,7 @@ pipeline {
         }
         stage('Prepare test setup') {
             steps {
+                sh 'docker-compose --version'
                 sh 'docker-compose -f docker-compose-hub.yml up -d'
             }
         }
