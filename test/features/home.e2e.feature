@@ -1,4 +1,3 @@
-@skip
 Feature: Homepage E2E
 
     Scenario: User sees the available online banking features
