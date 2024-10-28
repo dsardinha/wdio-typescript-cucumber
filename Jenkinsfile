@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker:latest'
+            args '-u root'
+        }
+    }
+    
     tools {
         nodejs '22.9.0' 
     }
