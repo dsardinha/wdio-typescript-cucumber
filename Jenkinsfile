@@ -1,16 +1,19 @@
 pipeline {
     agent any
+    environment {
+        PATH = "${PATH}:/usr/local/bin"
+    }
     tools {
         nodejs '22.9.0' 
     }
     
     stages {
-        stage('Install Dependencies') {
+        stage('Install dependencies') {
             steps {
                 sh 'npm install'
             }
         }
-        stage('Prepare test setup') {
+        stage('Start docker-compose') {
             steps {
                 sh 'npm run dockercomposeup'
             }
@@ -34,7 +37,7 @@ pipeline {
                 ])
             }
         }
-        stage('Clean') {
+        stage('Stop docker-compose') {
             steps {
                 sh 'npm run dockercomposedown'
             }
