@@ -19,6 +19,8 @@
     "wdio": "concurrently \"npm run visual\" \"npm run e2e\"",
     "allure": "allure generate allure-results/ --clean && allure open",
     "wdio:docker:visual": "CUCUMBER_STEP_REPORTER='false' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='true' wdio wdio.docker.conf.ts --spec ./test/specs/**/*.ts --framework mocha",
-    "wdio:docker:e2e": "CUCUMBER_STEP_REPORTER='true' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='false' wdio wdio.docker.conf.ts --spec ./test/features/**/*.feature"
+    "wdio:docker:e2e": "CUCUMBER_STEP_REPORTER='true' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='false' wdio wdio.docker.conf.ts --spec ./test/features/**/*.feature",
+    "dockercomposeup": "docker-compose -f docker-compose-hub.yml up -d",
+    "dockercomposedown": "docker-compose -f docker-compose-hub.yml down"
   }
 }

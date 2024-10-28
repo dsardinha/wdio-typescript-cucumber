@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Prepare test setup') {
             steps {
-                sh 'docker-compose -f docker-compose-hub.yml up -d'
+                sh 'npm dockercomposeup'
             }
         }
         stage('E2E Tests') {
