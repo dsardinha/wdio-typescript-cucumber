@@ -10,9 +10,13 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('Check PATH') {
+            steps {
+                sh 'echo $PATH'
+            }
+        }
         stage('Prepare test setup') {
             steps {
-                sh 'docker-compose --version'
                 sh 'docker-compose -f docker-compose-hub.yml up -d'
             }
         }
