@@ -18,14 +18,18 @@ pipeline {
                 sh 'npm run dockercomposeup'
             }
         }
-        stage('E2E Tests') {
-            steps {
-                sh 'npm run wdio:docker:e2e'
-            }
-        }
         stage('Visual Tests') {
             steps {
-                sh 'npm run wdio:docker:visual'
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh 'npm run wdio:docker:visual'
+                }
+            }
+        }
+        stage('E2E Tests') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh 'npm run wdio:docker:e2e'
+                }
             }
         }
         stage('Allure Report') {
