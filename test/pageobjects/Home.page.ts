@@ -12,7 +12,7 @@ class HomePage {
 
     public async open() {
         await browser.url('/');
-        await browser.maximizeWindow();
+        await browser.setWindowSize(1920, 1080);
     }
 
     public async clickFeedbackLink() {

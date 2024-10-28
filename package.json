@@ -10,12 +10,15 @@
     "@wdio/mocha-framework": "^9.1.3",
     "@wdio/spec-reporter": "^9.1.3",
     "@wdio/visual-service": "^6.2.1",
-    "concurrently": "^9.0.1"
+    "concurrently": "^9.0.1",
+    "wdio-docker-service": "^3.2.1"
   },
   "scripts": {
-    "visual": "CUCUMBER_STEP_REPORTER='false' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='true' wdio wdio.conf.js --spec ./test/specs/**/*.ts --framework mocha",
-    "e2e": "CUCUMBER_STEP_REPORTER='true' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='false' wdio wdio.conf.js --spec ./test/features/**/*.feature",
+    "visual": "CUCUMBER_STEP_REPORTER='false' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='true' wdio wdio.conf.ts --spec ./test/specs/**/*.ts --framework mocha",
+    "e2e": "CUCUMBER_STEP_REPORTER='true' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='false' wdio wdio.conf.ts --spec ./test/features/**/*.feature",
     "wdio": "concurrently \"npm run visual\" \"npm run e2e\"",
-    "allure": "allure generate allure-results/ --clean && allure open"
+    "allure": "allure generate allure-results/ --clean && allure open",
+    "wdio:docker:visual": "CUCUMBER_STEP_REPORTER='false' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='true' wdio wdio.docker.conf.ts --spec ./test/specs/**/*.ts --framework mocha",
+    "wdio:docker:e2e": "CUCUMBER_STEP_REPORTER='true' DISABLE_WEBDRIVER_SCREENSHOTS_REPORTING='false' wdio wdio.docker.conf.ts --spec ./test/features/**/*.feature"
   }
 }

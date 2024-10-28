@@ -10,14 +10,19 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('Prepare test setup') {
+            steps {
+                sh 'docker-compose -f docker-compose-hub.yml up -d'
+            }
+        }
         stage('E2E Tests') {
             steps {
-                sh 'npm run e2e'
+                sh 'wdio:docker:e2e'
             }
         }
         stage('Visual Tests') {
             steps {
-                sh 'npm run visual'
+                sh 'wdio:docker:visual'
             }
         }
         stage('Allure Report') {
@@ -27,6 +32,11 @@ pipeline {
                     jdk: '',
                     results: [[path: 'allure-results']]
                 ])
+            }
+        }
+        stage('Clean') {
+            steps {
+                sh 'docker-compose -f docker-compose-hub.yml down'
             }
         }
     }
