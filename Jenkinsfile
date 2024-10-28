@@ -20,14 +20,14 @@ pipeline {
         }
         stage('Visual Tests') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh 'npm run wdio:docker:visual'
                 }
             }
         }
         stage('E2E Tests') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh 'npm run wdio:docker:e2e'
                 }
             }
