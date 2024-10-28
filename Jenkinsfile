@@ -17,17 +17,17 @@ pipeline {
         }
         stage('Prepare test setup') {
             steps {
-                sh 'npm dockercomposeup'
+                sh 'npm run dockercomposeup'
             }
         }
         stage('E2E Tests') {
             steps {
-                sh 'wdio:docker:e2e'
+                sh 'npm run wdio:docker:e2e'
             }
         }
         stage('Visual Tests') {
             steps {
-                sh 'wdio:docker:visual'
+                sh 'npm run wdio:docker:visual'
             }
         }
         stage('Allure Report') {
@@ -41,7 +41,7 @@ pipeline {
         }
         stage('Clean') {
             steps {
-                sh 'docker-compose -f docker-compose-hub.yml down'
+                sh 'npm run dockercomposedown'
             }
         }
     }
