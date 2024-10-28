@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     tools {
         nodejs '22.9.0' 
     }
@@ -8,11 +13,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
-            }
-        }
-        stage('Check PATH') {
-            steps {
-                sh 'echo $PATH'
             }
         }
         stage('Prepare test setup') {
